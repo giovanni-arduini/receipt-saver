@@ -1,4 +1,9 @@
-import { createApp } from 'vue'
-import App from './App.vue'
+import { createApp } from "vue";
+import App from "./App.vue";
+import TextConverter from "./components/TextConverter.vue";
 
-createApp(App).mount('#app')
+const app = createApp(App);
+
+app.component("text-converter", TextConverter);
+
+app.mount("#app");
