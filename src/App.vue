@@ -1,15 +1,10 @@
 <template>
-  <text-converter></text-converter>
+  <OcrAndAnalysis />
 </template>
 
 <script>
-import TextConverter from "./components/TextConverter.vue";
-
 export default {
   name: "App",
-  components: {
-    TextConverter,
-  },
 };
 </script>
 
