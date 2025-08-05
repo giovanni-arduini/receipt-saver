@@ -29,12 +29,13 @@ watch(
         },
         body: JSON.stringify({
           model: "mistral",
-          prompt: `Estrai da questo testo i seguenti dati se presenti:
+          prompt: `Estrai da questo testo questi 5 dati, solo se presenti:
 - Data del documento
 - Tipo del documento
-- Se è una ricetta medica, codice della ricetta, incluso tra due asterischi
+- Nome del medico o dell'azienda
+- SOLO se  è una ricetta medica, codice della ricetta: sono i campi inclusi tra due asterischi
 - Se è una fattura o uno scontrino fiscale: numero della fattura 
-- Se è una fattura o uno scontrino fiscale: costo 
+- Se è una fattura o uno scontrino fiscale: costo totale 
 
 Testo:
 ${newText}`,
