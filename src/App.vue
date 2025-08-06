@@ -1,4 +1,5 @@
 <template>
+  <SideTab />
   <OcrAndAnalysis />
 </template>
 
