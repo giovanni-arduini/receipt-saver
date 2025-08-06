@@ -1,11 +1,20 @@
 <template>
-  <SideTab />
+  <SideTab :folder-list="folderList" />
   <OcrAndAnalysis />
 </template>
 
 <script>
 export default {
   name: "App",
+  data() {
+    return {
+      folderList: [
+        { name: "gigi", id: 1 },
+        { name: "pigi", id: 2 },
+        { name: "pipi", id: 3 },
+      ],
+    };
+  },
 };
 </script>
 
