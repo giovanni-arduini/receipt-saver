@@ -1,7 +1,13 @@
 <template>
   <div class="side-tab">
     <div id="quick-add">
-      <button>Crea cartella</button>
+      <button @click="addFolder">Crea cartella</button>
+    </div>
+    <div v-if="showFolderModal">
+      <form @submit.prevent="saveNewFolder">
+        <input v-model="newFolderName" type="text" />
+        <button>invia</button>
+      </form>
     </div>
     <div id="folder-list-container">
       <form action="">
@@ -24,7 +30,10 @@
 </template>
 
 <script setup>
-import { defineProps } from "vue";
+import { ref, defineProps, defineEmits } from "vue";
+
+const showFolderModal = ref(false);
+const newFolderName = ref("");
 
 defineProps({
   folderList: {
@@ -32,6 +41,17 @@ defineProps({
     required: true,
   },
 });
+
+defineEmits(["add-folder"]);
+
+function addFolder() {
+  showFolderModal.value = !showFolderModal.value;
+  console.log(showFolderModal);
+}
+
+function saveNewFolder() {
+  console.log("ciao mamma");
+}
 </script>
 
 <style scoped>
