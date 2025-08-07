@@ -1,5 +1,5 @@
 <template>
-  <SideTab :folder-list="folderList" />
+  <SideTab :folder-list="folderList" @save-folder="handleAddFolder" />
   <OcrAndAnalysis />
 </template>
 
@@ -14,6 +14,13 @@ export default {
         { name: "pipi", id: 3 },
       ],
     };
+  },
+  methods: {
+    handleAddFolder(text) {
+      const newFolder = { name: text, id: this.folderList.length + 1 };
+      this.folderList.push(newFolder);
+      console.log(this.folderList);
+    },
   },
 };
 </script>

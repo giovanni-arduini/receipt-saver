@@ -42,15 +42,16 @@ defineProps({
   },
 });
 
-defineEmits(["add-folder"]);
+const emit = defineEmits(["save-folder"]);
 
 function addFolder() {
   showFolderModal.value = !showFolderModal.value;
   console.log(showFolderModal);
 }
-
 function saveNewFolder() {
-  console.log("ciao mamma");
+  emit("save-folder", newFolderName.value);
+  newFolderName.value = "";
+  showFolderModal.value = false;
 }
 </script>
 
