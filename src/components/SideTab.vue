@@ -6,6 +6,13 @@
     <div v-if="showFolderModal">
       <form @submit.prevent="saveNewFolder">
         <input v-model="newFolderName" type="text" />
+        <input v-model="newFolderDate" type="date" />
+        <select v-model="newFolderCategory">
+          <option value="Fatture">Fatture</option>
+          <option value="Ricette">Ricette</option>
+        </select>
+        />
+
         <button>invia</button>
       </form>
     </div>
@@ -34,6 +41,8 @@ import { ref, defineProps, defineEmits } from "vue";
 
 const showFolderModal = ref(false);
 const newFolderName = ref("");
+const newFolderDate = ref(new Date().getDate());
+const newFolderCategory = ref("Fatture");
 
 defineProps({
   folderList: {

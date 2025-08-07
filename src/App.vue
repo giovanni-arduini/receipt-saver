@@ -9,9 +9,9 @@ export default {
   data() {
     return {
       folderList: [
-        { name: "gigi", id: 1 },
-        { name: "pigi", id: 2 },
-        { name: "pipi", id: 3 },
+        { name: "2024", id: 1 },
+        { name: "Febbraio", id: 2 },
+        { name: "Marzo", id: 3 },
       ],
     };
   },

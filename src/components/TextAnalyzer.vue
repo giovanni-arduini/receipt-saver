@@ -21,8 +21,6 @@ const analyzedObject = ref({});
 watch(
   () => props.text,
   async (newText) => {
-    console.log("Nuovo testo ricevuto:", newText);
-
     if (!newText) return;
 
     try {
