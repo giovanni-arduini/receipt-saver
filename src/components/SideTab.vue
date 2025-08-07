@@ -49,6 +49,7 @@ function toggleNewFolderModal() {
 
 function saveNewFolder(name, date, category) {
   emit("add-folder", name, date, category);
+  showFolderModal.value = false;
 }
 </script>
 

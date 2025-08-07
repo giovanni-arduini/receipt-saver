@@ -15,12 +15,17 @@
 <script setup>
 import { defineEmits, ref } from "vue";
 const newFolderName = ref("");
-const newFolderDate = ref("");
+const newFolderDate = ref(new Date());
+console.log(newFolderDate);
 const newFolderCategory = ref("Fatture");
 
 const emit = defineEmits(["add-folder"]);
 
 function createNewFolder() {
+  if (newFolderName.value.trim() === "") {
+    alert("Inserire un nome ");
+    return;
+  }
   emit(
     "add-folder",
     newFolderName.value,
