@@ -1,0 +1,32 @@
+<template>
+  <form @submit.prevent="createNewFolder">
+    <input v-model="newFolderName" type="text" />
+    <input v-model="newFolderDate" type="date" />
+    <select v-model="newFolderCategory">
+      <option value="Fatture">Fatture</option>
+      <option value="Ricette">Ricette</option>
+    </select>
+    />
+
+    <button>invia</button>
+  </form>
+</template>
+
+<script setup>
+import { defineEmits, ref } from "vue";
+const newFolderName = ref("");
+const newFolderDate = ref("");
+const newFolderCategory = ref("Fatture");
+
+const emit = defineEmits(["add-folder"]);
+
+function createNewFolder() {
+  emit(
+    "add-folder",
+    newFolderName.value,
+    newFolderDate.value,
+    newFolderCategory.value
+  );
+  newFolderName.value = "";
+}
+</script>

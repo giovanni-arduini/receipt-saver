@@ -1,21 +1,13 @@
 <template>
+  <folder-creation-modal
+    v-if="showFolderModal"
+    @add-folder="saveNewFolder"
+  ></folder-creation-modal>
   <div class="side-tab">
     <div id="quick-add">
-      <button @click="addFolder">Crea cartella</button>
+      <button @click="toggleNewFolderModal">Crea cartella</button>
     </div>
-    <div v-if="showFolderModal">
-      <form @submit.prevent="saveNewFolder">
-        <input v-model="newFolderName" type="text" />
-        <input v-model="newFolderDate" type="date" />
-        <select v-model="newFolderCategory">
-          <option value="Fatture">Fatture</option>
-          <option value="Ricette">Ricette</option>
-        </select>
-        />
 
-        <button>invia</button>
-      </form>
-    </div>
     <div id="folder-list-container">
       <form action="">
         <div>
@@ -38,11 +30,9 @@
 
 <script setup>
 import { ref, defineProps, defineEmits } from "vue";
+import FolderCreationModal from "./FolderCreationModal.vue";
 
 const showFolderModal = ref(false);
-const newFolderName = ref("");
-const newFolderDate = ref(new Date().getDate());
-const newFolderCategory = ref("Fatture");
 
 defineProps({
   folderList: {
@@ -51,22 +41,14 @@ defineProps({
   },
 });
 
-const emit = defineEmits(["save-folder"]);
+const emit = defineEmits(["add-folder"]);
 
-function addFolder() {
+function toggleNewFolderModal() {
   showFolderModal.value = !showFolderModal.value;
-  console.log(showFolderModal);
 }
 
-function saveNewFolder() {
-  emit(
-    "save-folder",
-    newFolderName.value,
-    newFolderDate.value,
-    newFolderCategory.value
-  );
-  newFolderName.value = "";
-  showFolderModal.value = false;
+function saveNewFolder(name, date, category) {
+  emit("add-folder", name, date, category);
 }
 </script>
 
