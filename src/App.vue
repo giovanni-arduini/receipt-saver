@@ -9,17 +9,24 @@ export default {
   data() {
     return {
       folderList: [
-        { name: "2024", id: 1 },
-        { name: "Febbraio", id: 2 },
-        { name: "Marzo", id: 3 },
+        { name: "2024", id: 1, date: "2025-02-08", category: "Fatture" },
+        { name: "Febbraio", id: 2, date: "2025-02-08", category: "Fatture" },
+        { name: "Marzo", id: 3, date: "2025-02-08", category: "Fatture" },
       ],
     };
   },
+
   methods: {
-    handleAddFolder(text) {
-      const newFolder = { name: text, id: this.folderList.length + 1 };
+    handleAddFolder(text, date, category) {
+      const newFolder = {
+        name: text,
+        id: this.folderList.length + 1,
+        category: category,
+        date: date,
+      };
       this.folderList.push(newFolder);
-      console.log(this.folderList);
+      // console.log(this.folderList);
+      // console.log(newFolder);
     },
   },
 };

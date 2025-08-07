@@ -57,8 +57,14 @@ function addFolder() {
   showFolderModal.value = !showFolderModal.value;
   console.log(showFolderModal);
 }
+
 function saveNewFolder() {
-  emit("save-folder", newFolderName.value);
+  emit(
+    "save-folder",
+    newFolderName.value,
+    newFolderDate.value,
+    newFolderCategory.value
+  );
   newFolderName.value = "";
   showFolderModal.value = false;
 }
