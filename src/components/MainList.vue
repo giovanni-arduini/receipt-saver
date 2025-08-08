@@ -7,11 +7,12 @@
         <th>Categoria</th>
         <th>Pagati</th>
       </tr>
-      <tr v-for="file in files" :key="file.id">
+      <tr v-for="file in files" :key="file.id" v-on:click="toReceiptDetails">
         <td>{{ file.name }}</td>
         <td>{{ file.date }}</td>
         <td>{{ file.category }}</td>
         <td>{{ file.payed }}</td>
+        <td><button>Sposta</button></td>
       </tr>
     </table>
   </div>
