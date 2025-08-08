@@ -1,6 +1,6 @@
 <template>
   <SideTab :folder-list="folderList" @add-folder="handleAddFolder" />
-  <OcrAndAnalysis />
+  <OcrAndAnalysis @add-file="handleAddFile" />
   <MainList :files="filesList" />
 </template>
 
@@ -17,24 +17,30 @@ export default {
       filesList: [
         {
           name: "Dibase",
+          bougthFrom: "farmacia",
           id: 1,
           date: "2025-02-01",
           category: "Ricetta",
+          number: 456,
           payed: "20€",
         },
         {
           name: "Robilas",
-          id: 1,
+          bougthFrom: "farmacia",
+          id: 2,
           date: "2025-01-01",
           category: "Ricetta",
+          number: 234,
           payed: "11€",
         },
         {
-          name: "Materasso",
-          id: 1,
+          name: "Finestre",
+          bougthFrom: "Serramenti SRL",
+          id: 3,
           date: "2025-02-01",
           category: "Fattura",
-          payed: "100€",
+          number: 123,
+          payed: "1100€",
         },
       ],
     };
@@ -51,6 +57,10 @@ export default {
       this.folderList.push(newFolder);
       console.log(this.folderList);
       console.log(newFolder);
+    },
+
+    handleAddFile(obj) {
+      this.filesList.push(obj);
     },
   },
 };
