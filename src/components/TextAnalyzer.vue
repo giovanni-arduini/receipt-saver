@@ -18,6 +18,20 @@ const props = defineProps({
 const analyzedData = ref("Analisi in corso...");
 const analyzedObject = ref({});
 
+// Funzione di parsing
+function extractJsonFromResponse(responseText) {
+  const jsonStart = responseText.indexOf("{");
+  const jsonEnd = responseText.lastIndexOf("}");
+  if (jsonStart !== -1 && jsonEnd !== -1) {
+    try {
+      return JSON.parse(responseText.substring(jsonStart, jsonEnd + 1));
+    } catch (error) {
+      console.warn("Errore parsing JSON:", error);
+    }
+  }
+  return null;
+}
+
 watch(
   () => props.text,
   async (newText) => {
@@ -36,11 +50,10 @@ watch(
 {
   "name": "Nome del prodotto/servizio/medicinale o voce principale del documento",
   "bougthFrom": "Nome del medico, azienda o farmacia",
-  "id": numero intero univoco (può essere 0 se non disponibile),
   "date": "Data del documento in formato YYYY-MM-DD oppure stringa vuota",
   "category": "Ricetta | Scontrino | Fattura | Altro",
   "number": "Numero del documento, ricetta o fattura oppure stringa vuota",
-  "payed": "Prezzo totale con simbolo € oppure stringa vuota"
+  "payed": "Prezzo totale - non solo imponibile - con simbolo € oppure stringa vuota"
 }
 
 Rispondi **solo** con l'oggetto JSON, senza spiegazioni, senza testo prima o dopo.
@@ -64,7 +77,7 @@ ${newText}`,
       const jsonMatch = responseText.match(/\{[\s\S]*?\}/);
       if (jsonMatch) {
         try {
-          const parsed = JSON.parse(jsonMatch[0]);
+          const parsed = extractJsonFromResponse(responseText);
           analyzedObject.value = parsed;
         } catch (jsonError) {
           console.warn("JSON trovato ma non valido:", jsonError);
