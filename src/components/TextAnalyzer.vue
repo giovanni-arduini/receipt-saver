@@ -31,26 +31,21 @@ watch(
         },
         body: JSON.stringify({
           model: "mistral",
-          prompt: `Estrai da questo testo questi 5 dati, solo se presenti:
-- Data del documento
-- Tipo del documento
-- Nome del medico o dell'azienda
-- SOLO se  è una ricetta medica, codice della ricetta: sono i campi inclusi tra due asterischi
-- Se è una fattura o uno scontrino fiscale: numero della fattura 
-- Se è una fattura o uno scontrino fiscale: costo totale 
-
-Restituisci **solo** un oggetto JSON valido con questa struttura (usa valori reali, senza spiegazioni):
+          prompt: `Estrai dal testo fornito le seguenti informazioni, **solo se presenti**. Restituisci un oggetto JSON **valido** con **esattamente questa struttura**, usando **valori reali** dove possibile oppure stringhe vuote/nulli/zero dove non disponibili:
 
 {
-  "dataDocumento": "string",
-  "tipoDocumento": "string",
-  "nomeMedicoOAzienda": "string",
-  "codiceRicetta": "string (opzionale)",
-  "numeroFattura": "string",
-  "costoTotale": numero
+  "name": "Nome del prodotto/servizio/medicinale o voce principale del documento",
+  "bougthFrom": "Nome del medico, azienda o farmacia",
+  "id": numero intero univoco (può essere 0 se non disponibile),
+  "date": "Data del documento in formato YYYY-MM-DD oppure stringa vuota",
+  "category": "Ricetta | Scontrino | Fattura | Altro",
+  "number": "Numero del documento, ricetta o fattura oppure stringa vuota",
+  "payed": "Prezzo totale con simbolo € oppure stringa vuota"
 }
 
-Testo:
+Rispondi **solo** con l'oggetto JSON, senza spiegazioni, senza testo prima o dopo.
+
+Testo da analizzare:
 ${newText}`,
           stream: false,
         }),
