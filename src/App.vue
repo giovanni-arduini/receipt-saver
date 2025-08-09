@@ -1,7 +1,9 @@
 <template>
-  <SideTab :folder-list="folderList" @add-folder="handleAddFolder" />
-  <OcrAndAnalysis @add-file="handleAddFile" />
-  <MainList :files="filesList" />
+  <div class="grid grid-cols-5 grid-rows-5 gap-0 min-h-screen">
+    <SideTab :folder-list="folderList" @add-folder="handleAddFolder" />
+    <OcrAndAnalysis @add-file="handleAddFile" />
+    <MainList :files="filesList" />
+  </div>
 </template>
 
 <script>
@@ -73,6 +75,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
