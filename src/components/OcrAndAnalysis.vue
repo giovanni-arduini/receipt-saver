@@ -1,10 +1,12 @@
 <template>
-  <TextConverter @text-extracted="handleTextExtracted" />
-  <TextAnalyzer :text="extractedText" />
+  <div class="row-start-1 col-start-2 row-end-3 col-end-6 bg-blue-200">
+    <TextConverter @text-extracted="handleTextExtracted" />
+    <TextAnalyzer :text="extractedText" />
 
-  <!-- <p v-if="text">
-    <strong>Testo estratto in genitore: </strong>{{ extractedText }}
-  </p> -->
+    <!-- <p v-if="text">
+      <strong>Testo estratto in genitore: </strong>{{ extractedText }}
+    </p> -->
+  </div>
 </template>
 
 <script setup>

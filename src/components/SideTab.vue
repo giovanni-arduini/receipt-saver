@@ -1,29 +1,34 @@
 <template>
-  <folder-creation-modal
-    v-if="showFolderModal"
-    @add-folder="saveNewFolder"
-  ></folder-creation-modal>
-  <div class="side-tab">
-    <div id="quick-add">
-      <button @click="toggleNewFolderModal">Crea cartella</button>
-    </div>
+  <div class="row-start-1 col-start-1 row-end-6 col-end-2 bg-red-200">
+    <folder-creation-modal
+      v-if="showFolderModal"
+      @add-folder="saveNewFolder"
+      @close-modal="closeModal"
+    ></folder-creation-modal>
+    <div class="side-tab">
+      <div id="quick-add">
+        <button @click="toggleNewFolderModal">Crea cartella</button>
+      </div>
 
-    <div id="folder-list-container">
-      <form action="">
-        <div>
-          <label for="">Ordina per </label>
-          <select name="" id="">
-            <option value="date">data</option>
-            <option value="type">tipologia</option>
-            <option value="date">nome</option>
-          </select>
-        </div>
-      </form>
-    </div>
-    <div>
-      <ul>
-        <li v-for="folder in folderList" :key="folder.id">{{ folder.name }}</li>
-      </ul>
+      <div id="folder-list-container">
+        <form action="">
+          <div>
+            <label for="">Ordina per </label>
+            <select name="" id="">
+              <option value="date">data</option>
+              <option value="type">tipologia</option>
+              <option value="date">nome</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div>
+        <ul>
+          <li v-for="folder in folderList" :key="folder.id">
+            {{ folder.name }}
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
@@ -51,15 +56,19 @@ function saveNewFolder(name, date, category) {
   emit("add-folder", name, date, category);
   showFolderModal.value = false;
 }
+
+function closeModal() {
+  showFolderModal.value = false;
+}
 </script>
 
 <style scoped>
-.side-tab {
+/* .side-tab {
   position: fixed;
   left: 0;
   top: 0;
   bottom: 0;
   min-width: 15%;
   background-color: rgb(249, 241, 241);
-}
+} */
 </style>

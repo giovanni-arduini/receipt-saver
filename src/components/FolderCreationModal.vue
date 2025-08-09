@@ -6,9 +6,9 @@
       <option value="Fatture">Fatture</option>
       <option value="Ricette">Ricette</option>
     </select>
-    />
 
-    <button>invia</button>
+    <button>Crea</button>
+    <button>Chiudi</button>
   </form>
 </template>
 
@@ -19,7 +19,7 @@ const newFolderDate = ref(new Date());
 console.log(newFolderDate);
 const newFolderCategory = ref("Fatture");
 
-const emit = defineEmits(["add-folder"]);
+const emit = defineEmits(["add-folder", "close-modal"]);
 
 function createNewFolder() {
   if (newFolderName.value.trim() === "") {
