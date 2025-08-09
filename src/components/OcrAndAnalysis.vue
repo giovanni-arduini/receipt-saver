@@ -2,10 +2,9 @@
   <TextConverter @text-extracted="handleTextExtracted" />
   <TextAnalyzer :text="extractedText" />
 
-  <p v-if="text">
+  <!-- <p v-if="text">
     <strong>Testo estratto in genitore: </strong>{{ extractedText }}
-  </p>
-  <!-- DEBUG -->
+  </p> -->
 </template>
 
 <script setup>
