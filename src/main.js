@@ -5,6 +5,7 @@ import TextAnalyzer from "./components/TextAnalyzer.vue";
 import OcrAndAnalysis from "./components/OcrAndAnalysis.vue";
 import SideTab from "./components/SideTab.vue";
 import MainList from "./components/MainList.vue";
+import "./assets/tailwind.css";
 
 const app = createApp(App);
 
