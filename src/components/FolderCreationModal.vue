@@ -1,14 +1,38 @@
 <template>
-  <dialog ref="dialogRef" open>
-    <form method="dialog" @submit.prevent="createNewFolder">
-      <input v-model="newFolderName" type="text" placeholder="Nome cartella" />
-      <input v-model="newFolderDate" type="date" />
-      <select v-model="newFolderCategory">
-        <option value="Fatture">Fatture</option>
-        <option value="Ricette">Ricette</option>
-      </select>
-      <button type="submit">Crea</button>
-      <button type="button" @click="closeModal">Chiudi</button>
+  <dialog
+    ref="dialogRef"
+    open
+    class="z-1 w-full h-full bg-gray-800 bg-opacity-50 flex justify-center items-center"
+  >
+    <form
+      method="dialog"
+      @submit.prevent="createNewFolder"
+      class="bg-white flex flex-col p-10 rounded-md"
+    >
+      <button type="button" @click="closeModal">X</button>
+      <h2 class="mb-4">Crea una nuova cartella</h2>
+      <div class="flex flex-col items-start mb-3">
+        <label for="">Nome cartella</label>
+        <input
+          class="border rounded-md px-2"
+          v-model="newFolderName"
+          type="text"
+          placeholder="Nome cartella"
+        />
+      </div>
+      <div class="flex flex-col items-start mb-3">
+        <label for="">Data di riferimento</label>
+        <input v-model="newFolderDate" type="date" />
+      </div>
+      <div class="flex flex-col items-start mb-3">
+        <label for="">Tipologia</label>
+        <select v-model="newFolderCategory">
+          <option value="Fatture">Fatture</option>
+          <option value="Ricette">Ricette</option>
+        </select>
+      </div>
+
+      <button class="" type="submit">Crea</button>
     </form>
   </dialog>
 </template>
