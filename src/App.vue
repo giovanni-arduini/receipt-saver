@@ -3,6 +3,7 @@
     <SideTab :folder-list="folderList" @add-folder="handleAddFolder" />
     <OcrAndAnalysis @add-file="handleAddFile" />
     <MainList :files="filesList" />
+    <SummaryGraph :files="filesList" />
   </div>
 </template>
 
