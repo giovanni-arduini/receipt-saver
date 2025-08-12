@@ -10,6 +10,7 @@
         <button @click="toggleNewFolderModal">Crea cartella</button>
       </div>
 
+      <!-- ordinamento cartelle -->
       <div id="folder-list-container">
         <form action="">
           <div>
@@ -22,12 +23,22 @@
           </div>
         </form>
       </div>
+
+      <!-- lista delle cartelle -->
       <div>
         <ul>
           <li v-for="folder in folderList" :key="folder.id">
             {{ folder.name }}
           </li>
         </ul>
+      </div>
+
+      <!-- etichette e sezioni -->
+      <div class="flex flex-col">
+        <button>Homepage</button>
+        <button>Recenti</button>
+        <button>Speciali</button>
+        <button>Cestino</button>
       </div>
     </div>
   </div>
@@ -61,14 +72,3 @@ function closeModal() {
   showFolderModal.value = false;
 }
 </script>
-
-<style scoped>
-/* .side-tab {
-  position: fixed;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  min-width: 15%;
-  background-color: rgb(249, 241, 241);
-} */
-</style>
