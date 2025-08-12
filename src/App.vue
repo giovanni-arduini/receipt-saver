@@ -25,7 +25,7 @@ export default {
           date: "2025-02-01",
           category: "Ricetta",
           number: 456,
-          payed: "20€",
+          payed: 20,
         },
         {
           name: "Robilas",
@@ -34,7 +34,7 @@ export default {
           date: "2025-01-01",
           category: "Ricetta",
           number: 234,
-          payed: "11€",
+          payed: 11,
         },
         {
           name: "Finestre",
@@ -43,7 +43,7 @@ export default {
           date: "2025-02-01",
           category: "Fattura",
           number: 123,
-          payed: "1100€",
+          payed: 1100,
         },
       ],
     };
