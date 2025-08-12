@@ -5,14 +5,14 @@
       @add-folder="saveNewFolder"
       @close-modal="closeModal"
     ></folder-creation-modal>
-    <div class="side-tab">
-      <div id="quick-add">
+    <div class="mt-6">
+      <div id="quick-add" class="mb-5">
         <button @click="toggleNewFolderModal">Crea cartella</button>
       </div>
 
       <!-- ordinamento cartelle -->
-      <div id="folder-list-container">
-        <form action="">
+      <div id="folder-list-container ">
+        <form action="" class="mb-4">
           <div>
             <label for="">Ordina per </label>
             <select name="" id="">
@@ -25,7 +25,7 @@
       </div>
 
       <!-- lista delle cartelle -->
-      <div>
+      <div class="mb-4">
         <ul>
           <li v-for="folder in folderList" :key="folder.id">
             {{ folder.name }}

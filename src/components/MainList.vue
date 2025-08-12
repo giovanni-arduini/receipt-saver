@@ -10,6 +10,8 @@
         <th>Data</th>
         <th>Categoria</th>
         <th>Pagati</th>
+        <th>Cartella</th>
+        <th></th>
       </tr>
       <tr
         class="bg-white odd:bg-gray-100"
@@ -31,6 +33,9 @@
         </td>
         <td>
           <button>Sposta</button>
+        </td>
+        <td>
+          <button>*</button>
         </td>
       </tr>
     </table>
