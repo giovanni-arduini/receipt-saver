@@ -115,6 +115,18 @@ const filteredFiles = computed(() => {
   return state.filesList;
 });
 
+const activeSectionName = computed(() => {
+  if (state.activeFilter === "special") return "Preferiti";
+  if (state.activeFilter === "current") return "Anno corrente";
+
+  if (typeof state.activeFilter === "number") {
+    const folder = state.folderList.find((f) => f.id === state.activeFilter);
+    return folder ? folder.name : "";
+  }
+
+  return "Tutti i file";
+});
+
 export function useFiles() {
   function setFilter(filter) {
     state.activeFilter = filter;
@@ -127,10 +139,16 @@ export function useFiles() {
     }
   }
 
+  function deleteFolder(id) {
+    state.folderList = state.folderList.filter((folder) => folder.id !== id);
+  }
+
   return {
     state,
     filteredFiles,
+    activeSectionName,
     setFilter,
     toggleSpecial,
+    deleteFolder,
   };
 }
