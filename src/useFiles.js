@@ -3,9 +3,27 @@ import { reactive, computed } from "vue";
 
 const state = reactive({
   folderList: [
-    { name: "2024", id: 1, date: "2025-02-08", category: "Fatture" },
-    { name: "Febbraio", id: 2, date: "2025-03-08", category: "Fatture" },
-    { name: "Marzo", id: 3, date: "2025-06-08", category: "Fatture" },
+    {
+      name: "2024",
+      id: 1,
+      date: "2025-02-08",
+      category: "Fatture",
+      content: [],
+    },
+    {
+      name: "Febbraio",
+      id: 2,
+      date: "2025-03-08",
+      category: "Fatture",
+      content: [],
+    },
+    {
+      name: "Marzo",
+      id: 3,
+      date: "2025-06-08",
+      category: "Fatture",
+      content: [],
+    },
   ],
   filesList: [
     {
@@ -17,6 +35,7 @@ const state = reactive({
       number: 456,
       payed: 20,
       special: false,
+      folderId: null,
     },
     {
       name: "Robilas",
@@ -27,6 +46,7 @@ const state = reactive({
       number: 234,
       payed: 11,
       special: true,
+      folderId: 1,
     },
     {
       name: "Finestre",
@@ -37,6 +57,7 @@ const state = reactive({
       number: 123,
       payed: 1100,
       special: false,
+      folderId: null,
     },
     {
       name: "Cicci",
@@ -47,6 +68,7 @@ const state = reactive({
       number: 456,
       payed: 20,
       special: true,
+      folderId: null,
     },
     {
       name: "Picci",
@@ -57,6 +79,7 @@ const state = reactive({
       number: 324234,
       payed: 34,
       special: false,
+      folderId: 1,
     },
     {
       name: "Gigi",
@@ -67,6 +90,7 @@ const state = reactive({
       number: 23543,
       payed: 55,
       special: false,
+      folderId: null,
     },
   ],
   activeFilter: null, // "special" | folderId | null
@@ -76,10 +100,11 @@ const filteredFiles = computed(() => {
   if (state.activeFilter === "special") {
     return state.filesList.filter((f) => f.special);
   }
+
   if (typeof state.activeFilter === "number") {
-    // filtraggio per folderId (qui ipotizzo che un file abbia folderId)
     return state.filesList.filter((f) => f.folderId === state.activeFilter);
   }
+
   if (state.activeFilter === "current") {
     const currentYear = new Date().getFullYear();
     return state.filesList.filter(
