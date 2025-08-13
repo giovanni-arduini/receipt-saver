@@ -53,7 +53,8 @@ watch(
   "date": "Data del documento in formato YYYY-MM-DD oppure stringa vuota",
   "category": "Ricetta | Scontrino | Fattura | Altro",
   "number": "Numero del documento, ricetta o fattura oppure stringa vuota",
-  "payed": "Prezzo totale espresso in numero, oppure stringa vuota"
+  "payed": "Prezzo totale espresso in numero, oppure stringa vuota",
+  "special": boolean false di default
 }
 
 Rispondi **solo** con l'oggetto JSON, senza spiegazioni, senza testo prima o dopo.

@@ -27,7 +27,11 @@
       <!-- lista delle cartelle -->
       <div class="mb-4">
         <ul>
-          <li v-for="folder in folderList" :key="folder.id">
+          <li
+            v-for="folder in folderList"
+            :key="folder.id"
+            @click="showFilesInFolder(folder.id)"
+          >
             {{ folder.name }}
           </li>
         </ul>
@@ -38,8 +42,7 @@
         <button @click="showCurrentYear">Anno corrente</button>
         <button @click="showSpecial">Speciali</button>
         <button @click="showAll">Mostra tutte</button>
-        <!-- <button>Archivio</button> -->
-        <button>Cestino</button>
+        <!-- <button @click="showDeleted">Cestino</button> -->
       </div>
     </div>
   </div>
@@ -58,6 +61,10 @@ function showSpecial() {
 
 function showAll() {
   setFilter(null);
+}
+
+function showFilesInFolder(n) {
+  setFilter(n);
 }
 
 function showCurrentYear() {
