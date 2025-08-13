@@ -1,5 +1,5 @@
 <template>
-  <div class="row-start-1 col-start-1 row-end-6 col-end-2 bg-red-200">
+  <div class="row-start-1 col-start-1 row-end-6 col-end-2 bg-red-200 px-20">
     <folder-creation-modal
       v-if="showFolderModal"
       @add-folder="saveNewFolder"
@@ -27,18 +27,19 @@
       <!-- lista delle cartelle -->
       <div class="mb-4">
         <ul>
-          <li
-            v-for="folder in folderList"
-            :key="folder.id"
-            @click="showFilesInFolder(folder.id)"
-          >
-            {{ folder.name }}
+          <li v-for="folder in state.folderList" :key="folder.id">
+            <div class="flex justify-between">
+              <div @click="showFilesInFolder(folder.id)">
+                {{ folder.name }}
+              </div>
+              <button @click="handleDeleteFolder(folder.id)">Elimina</button>
+            </div>
           </li>
         </ul>
       </div>
 
       <!-- etichette e sezioni -->
-      <div class="flex flex-col">
+      <div class="flex flex-col items-start">
         <button @click="showCurrentYear">Anno corrente</button>
         <button @click="showSpecial">Speciali</button>
         <button @click="showAll">Mostra tutte</button>
@@ -53,7 +54,7 @@ import { ref, defineProps, defineEmits } from "vue";
 import FolderCreationModal from "./FolderCreationModal.vue";
 
 import { useFiles } from "@/useFiles";
-const { setFilter } = useFiles();
+const { setFilter, deleteFolder, state } = useFiles();
 
 function showSpecial() {
   setFilter("special");
@@ -79,6 +80,11 @@ defineProps({
     required: true,
   },
 });
+
+function handleDeleteFolder(id) {
+  console.log("ciao mamma!");
+  deleteFolder(id);
+}
 
 const emit = defineEmits(["add-folder"]);
 
