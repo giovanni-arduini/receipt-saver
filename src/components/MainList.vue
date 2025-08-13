@@ -15,7 +15,7 @@
       </tr>
       <tr
         class="bg-white odd:bg-gray-100"
-        v-for="file in files"
+        v-for="file in filteredFiles"
         :key="file.id"
         v-on:click="toReceiptDetails"
       >
@@ -44,6 +44,10 @@
 
 <script setup>
 import { defineProps } from "vue";
+
+import { useFiles } from "../useFiles";
+const { filteredFiles } = useFiles();
+
 defineProps({
   files: {
     type: Array,
