@@ -1,46 +1,53 @@
 <template>
-  <div
-    class="flex items-start justify-center text-center row-start-3 col-start-2 row-end-6 col-end-6 bg-green-200"
-  >
-    <table
-      class="m-3 w-4/5 table-auto border-separate border-spacing-2 border-gray-400 dark:border-gray-500"
+  <div class="row-start-3 col-start-2 row-end-6 col-end-6 bg-green-200">
+    <div>
+      <h2 class="mt-4">{{ activeSectionName }}</h2>
+    </div>
+    <div
+      class="flex items-start justify-center text-center row-start-3 col-start-2 row-end-6 col-end-6 bg-green-200"
     >
-      <tr class="bg-gray-200">
-        <th>Nome</th>
-        <th>Data</th>
-        <th>Categoria</th>
-        <th>Pagati</th>
-        <th>Cartella</th>
-        <th></th>
-      </tr>
-      <tr
-        class="bg-white odd:bg-gray-100"
-        v-for="file in filteredFiles"
-        :key="file.id"
-        v-on:click="toReceiptDetails"
+      <table
+        v-if="filteredFiles.length > 0"
+        class="m-3 w-4/5 table-auto border-separate border-spacing-2 border-gray-400 dark:border-gray-500"
       >
-        <td>
-          {{ file.name }}
-        </td>
-        <td>
-          {{ file.date }}
-        </td>
-        <td>
-          {{ file.category }}
-        </td>
-        <td>
-          {{ file.payed }}
-        </td>
-        <td>
-          <button>Sposta</button>
-        </td>
-        <td>
-          <button @click="toggleSpecial(file.id)">
-            {{ file.special }}
-          </button>
-        </td>
-      </tr>
-    </table>
+        <tr class="bg-gray-200">
+          <th>Nome</th>
+          <th>Data</th>
+          <th>Categoria</th>
+          <th>Pagati</th>
+          <th>Cartella</th>
+          <th></th>
+        </tr>
+        <tr
+          class="bg-white odd:bg-gray-100"
+          v-for="file in filteredFiles"
+          :key="file.id"
+          v-on:click="toReceiptDetails"
+        >
+          <td>
+            {{ file.name }}
+          </td>
+          <td>
+            {{ file.date }}
+          </td>
+          <td>
+            {{ file.category }}
+          </td>
+          <td>
+            {{ file.payed }}
+          </td>
+          <td>
+            <button>Sposta</button>
+          </td>
+          <td>
+            <button @click="toggleSpecial(file.id)" style="color: orange">
+              {{ file.special ? "★" : "☆" }}
+            </button>
+          </td>
+        </tr>
+      </table>
+      <div v-else>Nessun file presente nella cartella</div>
+    </div>
   </div>
 </template>
 
@@ -48,7 +55,7 @@
 import { defineProps } from "vue";
 
 import { useFiles } from "../useFiles";
-const { filteredFiles, toggleSpecial } = useFiles();
+const { filteredFiles, toggleSpecial, activeSectionName } = useFiles();
 
 defineProps({
   files: {
