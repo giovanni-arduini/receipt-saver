@@ -1,0 +1,102 @@
+// src/composables/useFiles.js
+import { reactive, computed } from "vue";
+
+const state = reactive({
+  folderList: [
+    { name: "2024", id: 1, date: "2025-02-08", category: "Fatture" },
+    { name: "Febbraio", id: 2, date: "2025-03-08", category: "Fatture" },
+    { name: "Marzo", id: 3, date: "2025-06-08", category: "Fatture" },
+  ],
+  filesList: [
+    {
+      name: "Dibase",
+      boughtFrom: "farmacia",
+      id: 1,
+      date: "2025-02-01",
+      category: "Ricetta",
+      number: 456,
+      payed: 20,
+      special: false,
+    },
+    {
+      name: "Robilas",
+      boughtFrom: "farmacia",
+      id: 2,
+      date: "2025-01-01",
+      category: "Ricetta",
+      number: 234,
+      payed: 11,
+      special: true,
+    },
+    {
+      name: "Finestre",
+      boughtFrom: "Serramenti SRL",
+      id: 3,
+      date: "2025-02-01",
+      category: "Fattura",
+      number: 123,
+      payed: 1100,
+      special: false,
+    },
+    {
+      name: "Cicci",
+      boughtFrom: "farmacia",
+      id: 5,
+      date: "2024-02-01",
+      category: "Fattura",
+      number: 456,
+      payed: 20,
+      special: true,
+    },
+    {
+      name: "Picci",
+      boughtFrom: "farmacia",
+      id: 7,
+      date: "2024-02-01",
+      category: "Ricetta",
+      number: 324234,
+      payed: 34,
+      special: false,
+    },
+    {
+      name: "Gigi",
+      boughtFrom: "farmacia",
+      id: 8,
+      date: "2023-02-01",
+      category: "Ricetta",
+      number: 23543,
+      payed: 55,
+      special: false,
+    },
+  ],
+  activeFilter: null, // "special" | folderId | null
+});
+
+const filteredFiles = computed(() => {
+  if (state.activeFilter === "special") {
+    return state.filesList.filter((f) => f.special);
+  }
+  if (typeof state.activeFilter === "number") {
+    // filtraggio per folderId (qui ipotizzo che un file abbia folderId)
+    return state.filesList.filter((f) => f.folderId === state.activeFilter);
+  }
+  if (state.activeFilter === "current") {
+    const currentYear = new Date().getFullYear();
+    return state.filesList.filter(
+      (f) => new Date(f.date).getFullYear() === currentYear
+    );
+  }
+  return state.filesList;
+});
+
+export function useFiles() {
+  function setFilter(filter) {
+    state.activeFilter = filter;
+  }
+
+  return {
+    state,
+    filteredFiles,
+    setFilter,
+  };
+}
