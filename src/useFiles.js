@@ -25,6 +25,7 @@ const state = reactive({
       content: [],
     },
   ],
+
   filesList: [
     {
       name: "Dibase",
@@ -119,9 +120,17 @@ export function useFiles() {
     state.activeFilter = filter;
   }
 
+  function toggleSpecial(fileId) {
+    const file = state.filesList.find((f) => f.id === fileId);
+    if (file) {
+      file.special = !file.special;
+    }
+  }
+
   return {
     state,
     filteredFiles,
     setFilter,
+    toggleSpecial,
   };
 }

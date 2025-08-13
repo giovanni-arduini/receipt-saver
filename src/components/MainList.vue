@@ -35,7 +35,9 @@
           <button>Sposta</button>
         </td>
         <td>
-          <button>*</button>
+          <button @click="toggleSpecial(file.id)">
+            {{ file.special }}
+          </button>
         </td>
       </tr>
     </table>
@@ -46,7 +48,7 @@
 import { defineProps } from "vue";
 
 import { useFiles } from "../useFiles";
-const { filteredFiles } = useFiles();
+const { filteredFiles, toggleSpecial } = useFiles();
 
 defineProps({
   files: {
