@@ -46,8 +46,7 @@ function normalizeParsedObject(obj) {
   return {
     ...obj,
     id: Number(obj.id),
-    number: parseInt(obj.number),
-    payed: parseInt(obj.payed),
+    payed: parseFloat(obj.payed.replace(",", ".")),
     special: obj.special === true || obj.special === "true" ? true : false,
     folderId: Number(obj.folderId),
   };
@@ -66,19 +65,24 @@ watch(
         },
         body: JSON.stringify({
           model: "mistral",
-          prompt: `Estrai dal testo fornito le seguenti informazioni, **solo se presenti**. Restituisci un oggetto JSON **valido** con **esattamente questa struttura**, usando **valori reali** dove possibile oppure stringhe vuote/nulli/zero dove non disponibili:
+          prompt: `Estrai dal testo fornito le seguenti informazioni, solo se presenti. 
+Restituisci un oggetto JSON **valido** con **esattamente questa struttura**, usando valori reali dove possibile oppure stringhe vuote/nulli/zero dove non disponibili:
 
 {
   "name": "Nome del prodotto/servizio/medicinale o voce principale del documento",
   "bougthFrom": "Nome del medico, azienda o farmacia",
-  "date": "Data del documento in formato YYYY-MM-DD oppure stringa vuota",
-  "category": "Ricetta | Scontrino | Fattura | Altro",
-  "number": "Numero del documento, ricetta o fattura oppure stringa vuota",
+  "date": "Data del documento sempre in formato YYYY-MM-DD oppure stringa vuota",
+  "category": "Una delle seguenti opzioni esatte: Ricetta | Scontrino | Fattura | Altro",
+  "number": "Solo numeri del documento/ricetta/fattura come stringa. Non includere parole o prefissi",
   "payed": "Prezzo totale espresso in numero, oppure stringa vuota",
   "special": boolean false di default
 }
 
-Rispondi **solo** con l'oggetto JSON, senza spiegazioni, senza testo prima o dopo.
+**Regole aggiuntive**:
+1. La data deve essere sempre in formato YYYY-MM-DD. Se non è presente o non chiara, usare stringa vuota.
+2. La categoria deve essere **esattamente** una delle quattro opzioni: Ricetta, Scontrino, Fattura, Altro. Se è un Documento commerciale, usare l'opzione Scontrino.
+3. Il campo "number" deve contenere **solo cifre**, senza parole o prefissi come "Documento numero".
+4. Non aggiungere nulla oltre all'oggetto JSON. Nessuna spiegazione o testo extra.
 
 Testo da analizzare:
 ${newText}`,
