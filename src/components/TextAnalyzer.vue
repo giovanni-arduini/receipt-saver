@@ -5,18 +5,27 @@
 
     <h4>Oggetto estratto</h4>
     <pre>{{ analyzedObject }}</pre>
+
+    <button v-if="analyzedObject" @click="confirmAddFile">Aggiungi file</button>
   </div>
 </template>
 
 <script setup>
 import { ref, watch, defineProps } from "vue";
+import { useFiles } from "../useFiles";
 
-const props = defineProps({
-  text: String,
-});
+const { addNewFile } = useFiles();
 
+const props = defineProps({ text: String });
 const analyzedData = ref("Analisi in corso...");
-const analyzedObject = ref({});
+const analyzedObject = ref(null);
+
+function confirmAddFile() {
+  if (analyzedObject.value) {
+    addNewFile(analyzedObject.value);
+    alert("File aggiunto!");
+  }
+}
 
 // Funzione di parsing
 function extractJsonFromResponse(responseText) {
@@ -32,6 +41,17 @@ function extractJsonFromResponse(responseText) {
   return null;
 }
 
+function normalizeParsedObject(obj) {
+  if (!obj) return null;
+  return {
+    ...obj,
+    id: Number(obj.id),
+    payed: parseFloat(obj.payed.replace(",", ".")).toFixed(2),
+    special: obj.special === true || obj.special === "true" ? true : false,
+    folderId: Number(obj.folderId),
+  };
+}
+
 watch(
   () => props.text,
   async (newText) => {
@@ -45,18 +65,24 @@ watch(
         },
         body: JSON.stringify({
           model: "mistral",
-          prompt: `Estrai dal testo fornito le seguenti informazioni, **solo se presenti**. Restituisci un oggetto JSON **valido** con **esattamente questa struttura**, usando **valori reali** dove possibile oppure stringhe vuote/nulli/zero dove non disponibili:
+          prompt: `Estrai dal testo fornito le seguenti informazioni, solo se presenti. 
+Restituisci un oggetto JSON **valido** con **esattamente questa struttura**, usando valori reali dove possibile oppure stringhe vuote/nulli/zero dove non disponibili:
 
 {
   "name": "Nome del prodotto/servizio/medicinale o voce principale del documento",
   "bougthFrom": "Nome del medico, azienda o farmacia",
-  "date": "Data del documento in formato YYYY-MM-DD oppure stringa vuota",
-  "category": "Ricetta | Scontrino | Fattura | Altro",
-  "number": "Numero del documento, ricetta o fattura oppure stringa vuota",
-  "payed": "Prezzo totale espresso in numero, oppure stringa vuota"
+  "date": "Data del documento sempre in formato YYYY-MM-DD oppure stringa vuota",
+  "category": "Una delle seguenti opzioni esatte: Ricetta | Scontrino | Fattura | Altro",
+  "number": "Solo numeri del documento/ricetta/fattura come stringa. Non includere parole o prefissi",
+  "payed": "Prezzo totale espresso in numero, oppure stringa vuota",
+  "special": boolean false di default
 }
 
-Rispondi **solo** con l'oggetto JSON, senza spiegazioni, senza testo prima o dopo.
+**Regole aggiuntive**:
+1. La data deve essere sempre in formato YYYY-MM-DD. Se non è presente o non chiara, usare stringa vuota.
+2. La categoria deve essere **esattamente** una delle quattro opzioni: Ricetta, Scontrino, Fattura, Altro. Se è un Documento commerciale, usare l'opzione Scontrino.
+3. Il campo "number" deve contenere **solo cifre**, senza parole o prefissi come "Documento numero".
+4. Non aggiungere nulla oltre all'oggetto JSON. Nessuna spiegazione o testo extra.
 
 Testo da analizzare:
 ${newText}`,
@@ -78,7 +104,8 @@ ${newText}`,
       if (jsonMatch) {
         try {
           const parsed = extractJsonFromResponse(responseText);
-          analyzedObject.value = parsed;
+          analyzedObject.value = normalizeParsedObject(parsed);
+          console.log(analyzedObject.value);
         } catch (jsonError) {
           console.warn("JSON trovato ma non valido:", jsonError);
           analyzedObject.value = { errore: "JSON trovato ma non valido" };
