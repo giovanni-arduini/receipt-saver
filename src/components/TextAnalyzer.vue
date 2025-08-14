@@ -5,18 +5,27 @@
 
     <h4>Oggetto estratto</h4>
     <pre>{{ analyzedObject }}</pre>
+
+    <button v-if="analyzedObject" @click="confirmAddFile">Aggiungi file</button>
   </div>
 </template>
 
 <script setup>
 import { ref, watch, defineProps } from "vue";
+import { useFiles } from "../useFiles";
 
-const props = defineProps({
-  text: String,
-});
+const { addNewFile } = useFiles();
 
+const props = defineProps({ text: String });
 const analyzedData = ref("Analisi in corso...");
-const analyzedObject = ref({});
+const analyzedObject = ref(null);
+
+function confirmAddFile() {
+  if (analyzedObject.value) {
+    addNewFile(analyzedObject.value);
+    alert("File aggiunto!");
+  }
+}
 
 // Funzione di parsing
 function extractJsonFromResponse(responseText) {
@@ -30,6 +39,18 @@ function extractJsonFromResponse(responseText) {
     }
   }
   return null;
+}
+
+function normalizeParsedObject(obj) {
+  if (!obj) return null;
+  return {
+    ...obj,
+    id: Number(obj.id),
+    number: parseInt(obj.number),
+    payed: parseInt(obj.payed),
+    special: obj.special === true || obj.special === "true" ? true : false,
+    folderId: Number(obj.folderId),
+  };
 }
 
 watch(
@@ -79,7 +100,8 @@ ${newText}`,
       if (jsonMatch) {
         try {
           const parsed = extractJsonFromResponse(responseText);
-          analyzedObject.value = parsed;
+          analyzedObject.value = normalizeParsedObject(parsed);
+          console.log(analyzedObject.value);
         } catch (jsonError) {
           console.warn("JSON trovato ma non valido:", jsonError);
           analyzedObject.value = { errore: "JSON trovato ma non valido" };
