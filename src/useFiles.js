@@ -139,6 +139,10 @@ export function useFiles() {
     }
   }
 
+  function addNewFile(newFile) {
+    state.filesList = [...state.filesList, newFile];
+  }
+
   function deleteFolder(id) {
     state.folderList = state.folderList.filter((folder) => folder.id !== id);
   }
@@ -148,6 +152,7 @@ export function useFiles() {
     filteredFiles,
     activeSectionName,
     setFilter,
+    addNewFile,
     toggleSpecial,
     deleteFolder,
   };
