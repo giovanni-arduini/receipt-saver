@@ -46,7 +46,7 @@ function normalizeParsedObject(obj) {
   return {
     ...obj,
     id: Number(obj.id),
-    payed: parseFloat(obj.payed.replace(",", ".")),
+    payed: parseFloat(obj.payed.replace(",", ".")).toFixed(2),
     special: obj.special === true || obj.special === "true" ? true : false,
     folderId: Number(obj.folderId),
   };

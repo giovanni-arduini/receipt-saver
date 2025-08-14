@@ -22,7 +22,6 @@
           class="bg-white odd:bg-gray-100"
           v-for="file in filteredFiles"
           :key="file.id"
-          v-on:click="toReceiptDetails"
         >
           <td>
             {{ file.name }}
