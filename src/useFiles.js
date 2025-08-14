@@ -140,7 +140,7 @@ export function useFiles() {
   }
 
   function addNewFile(newFile) {
-    state.filesList = [...state.filesList, newFile];
+    state.filesList.push(newFile);
   }
 
   function deleteFolder(id) {
