@@ -14,7 +14,7 @@
     </div>
     <div>
       <h3>Detraibile</h3>
-      <p>{{ deductible }} €</p>
+      <p>{{ deductible }}</p>
     </div>
   </div>
 </template>
@@ -41,7 +41,7 @@ function percentageOfNumber(percent, number) {
 
 const deductible = computed(() =>
   expensesSum.value - 129.11 > 0
-    ? percentageOfNumber(19, expensesSum.value - 129.11).toFixed(2)
+    ? `${percentageOfNumber(19, expensesSum.value - 129.11).toFixed(2)} €`
     : "Non è stata ancora superata la franchigia"
 );
 
