@@ -20,7 +20,7 @@
 </template>
 
 <script setup>
-import { defineProps } from "vue";
+import { defineProps, computed } from "vue";
 const props = defineProps({
   files: {
     type: Array,
@@ -28,34 +28,38 @@ const props = defineProps({
   },
 });
 
-const expensesSum = props.files.reduce((acc, file) => {
-  acc = acc + file.payed;
-  return acc;
-}, 0);
+const expensesSum = computed(() =>
+  props.files.reduce((acc, file) => {
+    acc = acc + file.payed;
+    return acc;
+  }, 0)
+);
 
 function percentageOfNumber(percent, number) {
   return (percent / 100) * number;
 }
 
-const deductible =
-  expensesSum - 129.11 > 0
-    ? percentageOfNumber(19, expensesSum - 129.11).toFixed(2)
-    : "Non è stata ancora superata la franchigia";
+const deductible = computed(() =>
+  expensesSum.value - 129.11 > 0
+    ? percentageOfNumber(19, expensesSum.value - 129.11).toFixed(2)
+    : "Non è stata ancora superata la franchigia"
+);
 
-const categoryCount = props.files.reduce((acc, file) => {
-  acc[file.category] = (acc[file.category] || 0) + 1;
-  return acc;
-}, {});
+const categoryCount = computed(() =>
+  props.files.reduce((acc, file) => {
+    acc[file.category] = (acc[file.category] || 0) + 1;
+    return acc;
+  }, {})
+);
 
-const series = Object.values(categoryCount);
+const series = computed(() => Object.values(categoryCount.value));
 
-// Opzioni con le etichette
-const chartOptions = {
-  labels: Object.keys(categoryCount),
+const chartOptions = computed(() => ({
+  labels: Object.keys(categoryCount.value),
   legend: {
     position: "bottom",
   },
-};
+}));
 
 // // per grafico a linee
 // const series = [

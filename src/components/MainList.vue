@@ -55,7 +55,6 @@ import { defineProps } from "vue";
 
 import { useFiles } from "../useFiles";
 const { filteredFiles, toggleSpecial, activeSectionName } = useFiles();
-
 defineProps({
   files: {
     type: Array,
