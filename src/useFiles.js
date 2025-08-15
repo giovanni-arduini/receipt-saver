@@ -1,5 +1,7 @@
-// src/composables/useFiles.js
-import { reactive, computed } from "vue";
+import { reactive, computed, watch, onMounted } from "vue";
+import axios from "axios";
+
+const API_URL = "http://localhost:5001/api/items";
 
 const state = reactive({
   folderList: [
@@ -25,105 +27,32 @@ const state = reactive({
       content: [],
     },
   ],
-
-  filesList: [
-    {
-      name: "Dibase",
-      boughtFrom: "farmacia",
-      id: 1,
-      date: "2025-02-01",
-      category: "Ricetta",
-      number: 456,
-      payed: 20,
-      special: false,
-      folderId: null,
-    },
-    {
-      name: "Robilas",
-      boughtFrom: "farmacia",
-      id: 2,
-      date: "2025-01-01",
-      category: "Ricetta",
-      number: 234,
-      payed: 11,
-      special: true,
-      folderId: 1,
-    },
-    {
-      name: "Finestre",
-      boughtFrom: "Serramenti SRL",
-      id: 3,
-      date: "2025-02-01",
-      category: "Fattura",
-      number: 123,
-      payed: 1100,
-      special: false,
-      folderId: null,
-    },
-    {
-      name: "Cicci",
-      boughtFrom: "farmacia",
-      id: 5,
-      date: "2024-02-01",
-      category: "Fattura",
-      number: 456,
-      payed: 20,
-      special: true,
-      folderId: null,
-    },
-    {
-      name: "Picci",
-      boughtFrom: "farmacia",
-      id: 7,
-      date: "2024-02-01",
-      category: "Ricetta",
-      number: 324234,
-      payed: 34,
-      special: false,
-      folderId: 1,
-    },
-    {
-      name: "Gigi",
-      boughtFrom: "farmacia",
-      id: 8,
-      date: "2023-02-01",
-      category: "Ricetta",
-      number: 23543,
-      payed: 55,
-      special: false,
-      folderId: null,
-    },
-  ],
-  activeFilter: null, // "special" | folderId | null
+  filesList: [],
+  activeFilter: null,
 });
 
 const filteredFiles = computed(() => {
-  if (state.activeFilter === "special") {
+  if (state.activeFilter === "special")
     return state.filesList.filter((f) => f.special);
-  }
-
-  if (typeof state.activeFilter === "number") {
+  if (typeof state.activeFilter === "number")
     return state.filesList.filter((f) => f.folderId === state.activeFilter);
-  }
-
   if (state.activeFilter === "current") {
     const currentYear = new Date().getFullYear();
     return state.filesList.filter(
       (f) => new Date(f.date).getFullYear() === currentYear
     );
   }
+  console.log(filteredFiles);
   return state.filesList;
 });
 
 const activeSectionName = computed(() => {
   if (state.activeFilter === "special") return "Preferiti";
   if (state.activeFilter === "current") return "Anno corrente";
-
   if (typeof state.activeFilter === "number") {
     const folder = state.folderList.find((f) => f.id === state.activeFilter);
     return folder ? folder.name : "";
   }
-
   return "Tutti i file";
 });
 
@@ -132,27 +61,76 @@ export function useFiles() {
     state.activeFilter = filter;
   }
 
-  function toggleSpecial(fileId) {
-    const file = state.filesList.find((f) => f.id === fileId);
-    if (file) {
-      file.special = !file.special;
+  async function loadFiles() {
+    try {
+      const res = await axios.get(API_URL);
+      state.filesList = res.data;
+    } catch (err) {
+      console.error("Errore caricamento file:", err);
     }
   }
 
-  function addNewFile(newFile) {
-    state.filesList.push(newFile);
+  onMounted(() => {
+    loadFiles();
+  });
+
+  async function addNewFile(newFile) {
+    try {
+      const res = await axios.post(API_URL, newFile);
+      state.filesList.push(res.data);
+    } catch (err) {
+      console.error("Errore creazione file:", err);
+    }
   }
 
-  function deleteFolder(id) {
-    state.folderList = state.folderList.filter((folder) => folder.id !== id);
+  async function updateFile(id, updatedFields) {
+    try {
+      const res = await axios.put(`${API_URL}/${id}`, updatedFields);
+      const index = state.filesList.findIndex((f) => f.id === id);
+      if (index !== -1) state.filesList[index] = res.data;
+    } catch (err) {
+      console.error("Errore aggiornamento file:", err);
+    }
   }
+
+  async function deleteFile(id) {
+    try {
+      await axios.delete(`${API_URL}/${id}`);
+      state.filesList = state.filesList.filter((f) => f.id !== id);
+    } catch (err) {
+      console.error("Errore eliminazione file:", err);
+    }
+  }
+
+  function toggleSpecial(fileId) {
+    const file = state.filesList.find((f) => f.id === fileId);
+    if (file) updateFile(fileId, { special: !file.special });
+  }
+
+  async function deleteFolder(id) {
+    state.folderList = state.folderList.filter((folder) => folder.id !== id);
+    const filesToUpdate = state.filesList.filter((f) => f.folderId === id);
+    await Promise.all(
+      filesToUpdate.map((file) => updateFile(file.id, { folderId: null }))
+    );
+  }
+
+  // watch per osservare ogni cambiamento
+  watch(
+    () => state.filesList,
+    (newVal) => console.log("filesList cambiata:", newVal),
+    { deep: true }
+  );
 
   return {
     state,
     filteredFiles,
     activeSectionName,
     setFilter,
+    loadFiles,
     addNewFile,
+    updateFile,
+    deleteFile,
     toggleSpecial,
     deleteFolder,
   };
