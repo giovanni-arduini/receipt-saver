@@ -1,7 +1,7 @@
 import { reactive, computed, watch, onMounted } from "vue";
 import axios from "axios";
 
-const API_URL = "http://localhost:5001/api/items";
+const API_URL = "http://localhost:5001/api";
 
 const state = reactive({
   folderList: [
@@ -63,7 +63,7 @@ export function useFiles() {
 
   async function loadFiles() {
     try {
-      const res = await axios.get(API_URL);
+      const res = await axios.get(API_URL + "/files");
       state.filesList = res.data;
     } catch (err) {
       console.error("Errore caricamento file:", err);
@@ -76,7 +76,7 @@ export function useFiles() {
 
   async function addNewFile(newFile) {
     try {
-      const res = await axios.post(API_URL, newFile);
+      const res = await axios.post(API_URL + "/files", newFile);
       state.filesList.push(res.data);
     } catch (err) {
       console.error("Errore creazione file:", err);
@@ -85,7 +85,7 @@ export function useFiles() {
 
   async function updateFile(id, updatedFields) {
     try {
-      const res = await axios.put(`${API_URL}/${id}`, updatedFields);
+      const res = await axios.put(`${API_URL}/files/${id}`, updatedFields);
       const index = state.filesList.findIndex((f) => f.id === id);
       if (index !== -1) state.filesList[index] = res.data;
     } catch (err) {
@@ -95,7 +95,7 @@ export function useFiles() {
 
   async function deleteFile(id) {
     try {
-      await axios.delete(`${API_URL}/${id}`);
+      await axios.delete(`${API_URL}/files/${id}`);
       state.filesList = state.filesList.filter((f) => f.id !== id);
     } catch (err) {
       console.error("Errore eliminazione file:", err);
