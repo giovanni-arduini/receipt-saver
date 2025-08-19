@@ -4,29 +4,29 @@ import axios from "axios";
 const API_URL = "http://localhost:5001/api";
 
 const state = reactive({
-  folderList: [
-    {
-      name: "2024",
-      id: 1,
-      date: "2025-02-08",
-      category: "Fatture",
-      content: [],
-    },
-    {
-      name: "Febbraio",
-      id: 2,
-      date: "2025-03-08",
-      category: "Fatture",
-      content: [],
-    },
-    {
-      name: "Marzo",
-      id: 3,
-      date: "2025-06-08",
-      category: "Fatture",
-      content: [],
-    },
-  ],
+  // folderList: [
+  //   {
+  //     name: "2024",
+  //     id: 1,
+  //     date: "2025-02-08",
+  //     category: "Fatture",
+  //     content: [],
+  //   },
+  //   {
+  //     name: "Febbraio",
+  //     id: 2,
+  //     date: "2025-03-08",
+  //     category: "Fatture",
+  //     content: [],
+  //   },
+  //   {
+  //     name: "Marzo",
+  //     id: 3,
+  //     date: "2025-06-08",
+  //     category: "Fatture",
+  //     content: [],
+  //   },
+  // ],
   filesList: [],
   activeFilter: null,
 });
@@ -61,6 +61,15 @@ export function useFiles() {
     state.activeFilter = filter;
   }
 
+  async function loadFolders() {
+    try {
+      const res = await axios.get(API_URL + "/folders");
+      state.folderList = res.data;
+    } catch (err) {
+      console.error("Errore caricamento cartelle", err);
+    }
+  }
+
   async function loadFiles() {
     try {
       const res = await axios.get(API_URL + "/files");
@@ -72,6 +81,7 @@ export function useFiles() {
 
   onMounted(() => {
     loadFiles();
+    loadFolders();
   });
 
   async function addNewFile(newFile) {
