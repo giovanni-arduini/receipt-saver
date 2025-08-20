@@ -4,29 +4,7 @@ import axios from "axios";
 const API_URL = "http://localhost:5001/api";
 
 const state = reactive({
-  // folderList: [
-  //   {
-  //     name: "2024",
-  //     id: 1,
-  //     date: "2025-02-08",
-  //     category: "Fatture",
-  //     content: [],
-  //   },
-  //   {
-  //     name: "Febbraio",
-  //     id: 2,
-  //     date: "2025-03-08",
-  //     category: "Fatture",
-  //     content: [],
-  //   },
-  //   {
-  //     name: "Marzo",
-  //     id: 3,
-  //     date: "2025-06-08",
-  //     category: "Fatture",
-  //     content: [],
-  //   },
-  // ],
+  folderList: [],
   filesList: [],
   activeFilter: null,
 });
@@ -87,6 +65,7 @@ export function useFiles() {
   async function addNewFile(newFile) {
     try {
       const res = await axios.post(API_URL + "/files", newFile);
+      await loadFiles();
       state.filesList.push(res.data);
     } catch (err) {
       console.error("Errore creazione file:", err);
@@ -97,6 +76,8 @@ export function useFiles() {
     try {
       const res = await axios.put(`${API_URL}/files/${id}`, updatedFields);
       const index = state.filesList.findIndex((f) => f.id === id);
+      await loadFiles();
+
       if (index !== -1) state.filesList[index] = res.data;
     } catch (err) {
       console.error("Errore aggiornamento file:", err);
@@ -106,9 +87,21 @@ export function useFiles() {
   async function deleteFile(id) {
     try {
       await axios.delete(`${API_URL}/files/${id}`);
+      await loadFiles();
+
       state.filesList = state.filesList.filter((f) => f.id !== id);
     } catch (err) {
       console.error("Errore eliminazione file:", err);
+    }
+  }
+
+  async function deleteFolder(id) {
+    try {
+      await axios.delete(`${API_URL}/folders/${id}`);
+      await loadFolders();
+      // state.folderList = state.folderList.filter((f) => f.id !== id);
+    } catch (err) {
+      console.error("Errore durante l'eliminazione della cartella", err);
     }
   }
 
@@ -116,19 +109,13 @@ export function useFiles() {
     const file = state.filesList.find((f) => f.id === fileId);
     if (file) updateFile(fileId, { special: !file.special });
   }
-
-  async function deleteFolder(id) {
-    state.folderList = state.folderList.filter((folder) => folder.id !== id);
-    const filesToUpdate = state.filesList.filter((f) => f.folderId === id);
-    await Promise.all(
-      filesToUpdate.map((file) => updateFile(file.id, { folderId: null }))
-    );
-  }
-
   // watch per osservare ogni cambiamento
   watch(
-    () => state.filesList,
-    (newVal) => console.log("filesList cambiata:", newVal),
+    [() => state.filesList, () => state.folderList],
+    ([newFiles, newFolders]) => {
+      console.log("filesList cambiata:", newFiles);
+      console.log("folderList cambiata:", newFolders);
+    },
     { deep: true }
   );
 
