@@ -84,6 +84,15 @@ export function useFiles() {
     }
   }
 
+  async function showFile(id) {
+    try {
+      const res = await axios.get(`${API_URL}/files/${id}`);
+      return res.data;
+    } catch (err) {
+      console.err("Errore nel caricamento del file", err);
+    }
+  }
+
   async function deleteFile(id) {
     try {
       await axios.delete(`${API_URL}/files/${id}`);
@@ -125,6 +134,7 @@ export function useFiles() {
     activeSectionName,
     setFilter,
     loadFiles,
+    showFile,
     loadFolders,
     addNewFile,
     updateFile,
