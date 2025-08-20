@@ -69,7 +69,7 @@ async function createNewFolder() {
     // emit("add-folder", res.data);
     // newFolderName.value = "";
   } catch (err) {
-    alert("Errore creazione cartella");
+    // alert("Errore creazione cartella");
     console.error(err);
   }
 }

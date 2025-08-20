@@ -125,6 +125,7 @@ export function useFiles() {
     activeSectionName,
     setFilter,
     loadFiles,
+    loadFolders,
     addNewFile,
     updateFile,
     deleteFile,
