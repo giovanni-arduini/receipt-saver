@@ -39,27 +39,39 @@
 
 <script setup>
 import { defineEmits, ref } from "vue";
+import { useFiles } from "@/useFiles";
+import axios from "axios";
+
+const { loadFolders } = useFiles();
+
 const newFolderName = ref("");
-const newFolderDate = ref(new Date());
-console.log(newFolderDate);
+const newFolderDate = ref("");
 const newFolderCategory = ref("Fatture");
 const dialogRef = ref(null);
 
 const emit = defineEmits(["add-folder", "close-modal"]);
 
-function createNewFolder() {
+async function createNewFolder() {
   if (newFolderName.value.trim() === "") {
     alert("Inserire un nome ");
     return;
   }
-  emit(
-    "add-folder",
-    newFolderName.value,
-    newFolderDate.value,
-    newFolderCategory.value
-  );
-  newFolderName.value = "";
-  emit("close-modal");
+  try {
+    await axios.post("http://localhost:5001/api/folders", {
+      name: newFolderName.value,
+      date: new Date(newFolderDate.value),
+      category: newFolderCategory.value,
+    });
+    emit("close-modal");
+    await loadFolders();
+
+    // Puoi emettere i dati ricevuti dal backend (res.data) oppure solo chiudere il modal
+    // emit("add-folder", res.data);
+    // newFolderName.value = "";
+  } catch (err) {
+    alert("Errore creazione cartella");
+    console.error(err);
+  }
 }
 
 function closeModal() {
