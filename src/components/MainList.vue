@@ -1,5 +1,13 @@
 <template>
-  <div class="row-start-3 col-start-2 row-end-6 col-end-6 bg-green-200">
+  <div
+    v-if="showDetail"
+    class="row-start-3 col-start-2 row-end-6 col-end-6 bg-green-200"
+  >
+    <h1>{{ fileDetails.name }}</h1>
+    <p>{{ fileDetails.id }}</p>
+  </div>
+
+  <div v-else class="row-start-3 col-start-2 row-end-6 col-end-6 bg-green-200">
     <div>
       <h2 class="mt-4">{{ activeSectionName }}</h2>
     </div>
@@ -23,7 +31,7 @@
           v-for="file in filteredFiles"
           :key="file.id"
         >
-          <td>
+          <td @click="handleShowDetail(file.id)">
             {{ file.name }}
           </td>
           <td>
@@ -51,10 +59,21 @@
 </template>
 
 <script setup>
-import { defineProps } from "vue";
-
+import { defineProps, ref } from "vue";
 import { useFiles } from "../useFiles";
-const { filteredFiles, toggleSpecial, activeSectionName } = useFiles();
+
+const { filteredFiles, toggleSpecial, activeSectionName, showFile } =
+  useFiles();
+
+const showDetail = ref(false);
+const fileDetails = ref({});
+
+async function handleShowDetail(id) {
+  showDetail.value = true;
+  const res = await showFile(id);
+  fileDetails.value = res;
+}
+
 defineProps({
   files: {
     type: Array,
