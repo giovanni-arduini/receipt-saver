@@ -7,7 +7,10 @@ const state = reactive({
   folderList: [],
   filesList: [],
   activeFilter: null,
+  showDetail: false,
 });
+
+console.log(state);
 
 const filteredFiles = computed(() => {
   if (state.activeFilter === "special")

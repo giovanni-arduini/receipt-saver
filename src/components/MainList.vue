@@ -3,8 +3,11 @@
     v-if="showDetail"
     class="row-start-3 col-start-2 row-end-6 col-end-6 bg-green-200"
   >
-    <h1>{{ fileDetails.name }}</h1>
+    <FileDetail :file="fileDetails" :hide-detail="hideDetail" />
+
+    <!-- <h1>{{ fileDetails.name }}</h1>
     <p>{{ fileDetails.id }}</p>
+    <button @click="hideDetail">Back</button> -->
   </div>
 
   <div v-else class="row-start-3 col-start-2 row-end-6 col-end-6 bg-green-200">
@@ -61,17 +64,21 @@
 <script setup>
 import { defineProps, ref } from "vue";
 import { useFiles } from "../useFiles";
+import FileDetail from "./FileDetail.vue";
 
-const { filteredFiles, toggleSpecial, activeSectionName, showFile } =
+const { filteredFiles, toggleSpecial, activeSectionName, showFile, state } =
   useFiles();
-
-const showDetail = ref(false);
+const showDetail = ref(state.showDetail);
 const fileDetails = ref({});
 
 async function handleShowDetail(id) {
   showDetail.value = true;
   const res = await showFile(id);
   fileDetails.value = res;
+}
+
+function hideDetail() {
+  showDetail.value = false;
 }
 
 defineProps({
