@@ -5,6 +5,7 @@ import TextAnalyzer from "./components/TextAnalyzer.vue";
 import OcrAndAnalysis from "./components/OcrAndAnalysis.vue";
 import SideTab from "./components/SideTab.vue";
 import MainList from "./components/MainList.vue";
+import FileDetail from "./components/FileDetail.vue";
 import SummaryGraph from "./components/SummaryGraph.vue";
 import VueApexCharts from "vue3-apexcharts";
 
@@ -19,5 +20,6 @@ app.component("TextAnalyzer", TextAnalyzer);
 app.component("SideTab", SideTab);
 app.component("MainList", MainList);
 app.component("SummaryGraph", SummaryGraph);
+app.component("FileDetail", FileDetail);
 
 app.mount("#app");
