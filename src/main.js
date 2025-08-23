@@ -10,6 +10,7 @@ import SummaryGraph from "./components/SummaryGraph.vue";
 import VueApexCharts from "vue3-apexcharts";
 
 import "./assets/tailwind.css";
+import ModificationsModal from "./components/ModificationsModal.vue";
 
 const app = createApp(App);
 
@@ -21,5 +22,6 @@ app.component("SideTab", SideTab);
 app.component("MainList", MainList);
 app.component("SummaryGraph", SummaryGraph);
 app.component("FileDetail", FileDetail);
+app.component("ModificationsModal", ModificationsModal);
 
 app.mount("#app");
