@@ -18,7 +18,7 @@
 </template>
 
 <script setup>
-import { defineProps, computed, ref, watch } from "vue";
+import { defineProps, computed, ref } from "vue";
 import BasicModal from "./BasicModal.vue";
 import { useFiles } from "@/useFiles";
 
@@ -62,8 +62,6 @@ function handleUpdateFile(updatedData) {
   console.log("File aggiornato:", updatedData);
   showUpdateModal.value = false;
 }
-
-watch(file);
 
 function splitCamelCase(str) {
   return str

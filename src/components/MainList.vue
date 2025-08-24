@@ -3,12 +3,8 @@
     v-if="showDetail"
     class="row-start-3 col-start-2 row-end-6 col-end-6 bg-green-200"
   >
-    <ModificationsModal :fields="fileDetails" />
+    <!-- <ModificationsModal :fields="fileDetails" /> -->
     <FileDetail :file="fileDetails" :hide-detail="hideDetail" />
-
-    <!-- <h1>{{ fileDetails.name }}</h1>
-    <p>{{ fileDetails.id }}</p>
-    <button @click="hideDetail">Back</button> -->
   </div>
 
   <div v-else class="row-start-3 col-start-2 row-end-6 col-end-6 bg-green-200">
@@ -66,7 +62,7 @@
 import { defineProps, ref } from "vue";
 import { useFiles } from "../useFiles";
 import FileDetail from "./FileDetail.vue";
-import ModificationsModal from "./ModificationsModal.vue";
+// import ModificationsModal from "./ModificationsModal.vue";
 
 const { filteredFiles, toggleSpecial, activeSectionName, showFile, state } =
   useFiles();
