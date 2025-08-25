@@ -1,16 +1,16 @@
 import { reactive, computed, watch, onMounted } from "vue";
+import { useFolders } from "./useFolders";
 import axios from "axios";
 
 const API_URL = "http://localhost:5001/api";
 
 const state = reactive({
-  folderList: [],
   filesList: [],
-  activeFilter: null,
   showDetail: false,
+  activeFilter: null,
 });
 
-console.log(state);
+const { folderList } = useFolders();
 
 const filteredFiles = computed(() => {
   if (state.activeFilter === "special")
@@ -31,7 +31,7 @@ const activeSectionName = computed(() => {
   if (state.activeFilter === "special") return "Preferiti";
   if (state.activeFilter === "current") return "Anno corrente";
   if (typeof state.activeFilter === "number") {
-    const folder = state.folderList.find((f) => f.id === state.activeFilter);
+    const folder = folderList.value.find((f) => f.id === state.activeFilter);
     return folder ? folder.name : "";
   }
   return "Tutti i file";
@@ -40,15 +40,6 @@ const activeSectionName = computed(() => {
 export function useFiles() {
   function setFilter(filter) {
     state.activeFilter = filter;
-  }
-
-  async function loadFolders() {
-    try {
-      const res = await axios.get(API_URL + "/folders");
-      state.folderList = res.data;
-    } catch (err) {
-      console.error("Errore caricamento cartelle", err);
-    }
   }
 
   async function loadFiles() {
@@ -62,7 +53,6 @@ export function useFiles() {
 
   onMounted(() => {
     loadFiles();
-    loadFolders();
   });
 
   async function addNewFile(newFile) {
@@ -107,26 +97,16 @@ export function useFiles() {
     }
   }
 
-  async function deleteFolder(id) {
-    try {
-      await axios.delete(`${API_URL}/folders/${id}`);
-      await loadFolders();
-      // state.folderList = state.folderList.filter((f) => f.id !== id);
-    } catch (err) {
-      console.error("Errore durante l'eliminazione della cartella", err);
-    }
-  }
-
   function toggleSpecial(fileId) {
     const file = state.filesList.find((f) => f.id === fileId);
     if (file) updateFile(fileId, { special: !file.special });
   }
+
   // watch per osservare ogni cambiamento
   watch(
-    [() => state.filesList, () => state.folderList],
-    ([newFiles, newFolders]) => {
+    () => state.filesList,
+    ([newFiles]) => {
       console.log("filesList cambiata:", newFiles);
-      console.log("folderList cambiata:", newFolders);
     },
     { deep: true }
   );
@@ -135,14 +115,13 @@ export function useFiles() {
     state,
     filteredFiles,
     activeSectionName,
+
     setFilter,
     loadFiles,
     showFile,
-    loadFolders,
     addNewFile,
     updateFile,
     deleteFile,
     toggleSpecial,
-    deleteFolder,
   };
 }
