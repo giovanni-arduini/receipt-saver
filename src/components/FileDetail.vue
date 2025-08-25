@@ -9,8 +9,8 @@
     @close="showUpdateModal = false"
   />
   <div class="row-start-3 col-start-2 row-end-6 col-end-6 bg-green-200">
-    <h1>{{ file.name }}</h1>
-    <h2>{{ file.category }}</h2>
+    <h1>{{ fileDetail.name }}</h1>
+    <h2>{{ fileDetail.category }}</h2>
     <p>{{}}</p>
     <button @click="hideDetail">Back</button>
     <button @click="showUpdateModal = true">Modifica</button>
@@ -18,13 +18,17 @@
 </template>
 
 <script setup>
-import { defineProps, computed, ref } from "vue";
+import { defineProps, computed, ref, reactive } from "vue";
 import BasicModal from "./BasicModal.vue";
 import { useFiles } from "@/useFiles";
 
 const props = defineProps({
   file: Object,
   hideDetail: Function,
+});
+
+const fileDetail = reactive({
+  ...props.file,
 });
 
 const { updateFile } = useFiles();
@@ -43,7 +47,7 @@ const fileFields = computed(() =>
         name: key,
         label: splitCamelCase(key),
         type,
-        options: key === "category" ? ["Fatture", "Ricette"] : undefined,
+        options: key === "category" ? ["Fattura", "Ricetta"] : undefined,
         placeholder: key,
       };
     })
@@ -57,16 +61,16 @@ function handleUpdateFile(updatedData) {
     }
   }
 
+  Object.assign(fileDetail, updatedData);
   updateFile(props.file.id, updatedData);
 
-  console.log("File aggiornato:", updatedData);
   showUpdateModal.value = false;
 }
 
 function splitCamelCase(str) {
   return str
-    .replace(/([a-z])([A-Z])/g, "$1 $2") // separa camelCase
-    .toLowerCase() // tutto minuscolo
-    .replace(/^./, (s) => s.toUpperCase()); // solo prima maiuscola
+    .replace(/([a-z])([A-Z])/g, "$1 $2")
+    .toLowerCase()
+    .replace(/^./, (s) => s.toUpperCase());
 }
 </script>
