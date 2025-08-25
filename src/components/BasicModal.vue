@@ -31,7 +31,7 @@
             class="border rounded px-2"
           />
           <select
-            v-else-if="field.type === 'select'"
+            v-else-if="field.type === 'select' || field.type === 'boolean'"
             :id="field.name"
             v-model="formData[field.name]"
             class="border rounded px-2"
@@ -39,6 +39,15 @@
             <option v-for="opt in field.options" :key="opt" :value="opt">
               {{ opt }}
             </option>
+          </select>
+          <select
+            v-else-if="field.type === `boolean`"
+            :id="field.name"
+            v-model="formData[field.name]"
+            class="border rounded xp-2"
+          >
+            <option :value="true">true</option>
+            <option :value="false">false</option>
           </select>
           <!-- Aggiungi altri tipi se necessario -->
         </div>
