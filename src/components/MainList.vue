@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="showDetail"
+    v-if="state.showDetail"
     class="row-start-3 col-start-2 row-end-6 col-end-6 bg-green-200"
   >
     <!-- <ModificationsModal :fields="fileDetails" /> -->
@@ -66,17 +66,17 @@ import FileDetail from "./FileDetail.vue";
 
 const { filteredFiles, toggleSpecial, activeSectionName, showFile, state } =
   useFiles();
-const showDetail = ref(state.showDetail);
+
 const fileDetails = ref({});
 
 async function handleShowDetail(id) {
-  showDetail.value = true;
+  state.showDetail = true;
   const res = await showFile(id);
   fileDetails.value = res;
 }
 
 function hideDetail() {
-  showDetail.value = false;
+  state.showDetail = false;
 }
 
 defineProps({
