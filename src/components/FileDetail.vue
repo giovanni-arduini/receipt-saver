@@ -37,12 +37,14 @@ const showUpdateModal = ref(false);
 const fileFields = computed(() =>
   Object.keys(props.file || {})
     .filter(
-      (key) => !["id", "folderId", "createdAt", "_id", "__v"].includes(key)
+      (key) =>
+        !["id", "folderId", "createdAt", "_id", "__v", "special"].includes(key)
     )
     .map((key) => {
       let type = "text";
       if (key === "date") type = "date";
       if (key === "category") type = "select";
+      if (key === "special") type = "boolean";
       return {
         name: key,
         label: splitCamelCase(key),
