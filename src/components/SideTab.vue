@@ -27,7 +27,7 @@
       <!-- lista delle cartelle -->
       <div class="mb-4">
         <ul>
-          <li v-for="folder in state.folderList" :key="folder.id">
+          <li v-for="folder in folderList" :key="folder.id">
             <div class="flex justify-between">
               <div @click="showFilesInFolder(folder.id)">
                 {{ folder.name }}
@@ -50,13 +50,18 @@
 </template>
 
 <script setup>
-import { ref, defineProps, defineEmits } from "vue";
+import { ref } from "vue";
 import FolderCreationModal from "./FolderCreationModal.vue";
 
+import { useFolders } from "@/useFolders";
 import { useFiles } from "@/useFiles";
-const { setFilter, deleteFolder, state } = useFiles();
+
+const { setFilter, state } = useFiles();
+const { folderList, deleteFolder } = useFolders();
 
 function showFolders(tag) {
+  state.showDetail = false;
+  console.log(state.showDetail);
   setFilter(tag);
 }
 
@@ -66,27 +71,12 @@ function showFilesInFolder(n) {
 
 const showFolderModal = ref(false);
 
-defineProps({
-  folderList: {
-    type: Array,
-    required: true,
-  },
-});
-
 function handleDeleteFolder(id) {
-  console.log("ciao mamma!");
   deleteFolder(id);
 }
 
-const emit = defineEmits(["add-folder"]);
-
 function toggleNewFolderModal() {
   showFolderModal.value = !showFolderModal.value;
-}
-
-function saveNewFolder(name, date, category) {
-  emit("add-folder", name, date, category);
-  showFolderModal.value = false;
 }
 
 function closeModal() {

@@ -40,9 +40,11 @@
 <script setup>
 import { defineEmits, ref } from "vue";
 import { useFiles } from "@/useFiles";
-import axios from "axios";
+import { useFolders } from "@/useFolders";
+// import axios from "axios";
 
 const { loadFolders } = useFiles();
+const { addNewFolder } = useFolders();
 
 const newFolderName = ref("");
 const newFolderDate = ref("");
@@ -57,11 +59,16 @@ async function createNewFolder() {
     return;
   }
   try {
-    await axios.post("http://localhost:5001/api/folders", {
+    addNewFolder({
       name: newFolderName.value,
       date: new Date(newFolderDate.value),
       category: newFolderCategory.value,
     });
+    // await axios.post("http://localhost:5001/api/folders", {
+    //   name: newFolderName.value,
+    //   date: new Date(newFolderDate.value),
+    //   category: newFolderCategory.value,
+    // });
     emit("close-modal");
     await loadFolders();
 
