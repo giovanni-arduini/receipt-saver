@@ -54,10 +54,13 @@
       </table>
       <div v-else>Nessun file presente nella cartella</div>
     </div>
+    <SummaryGraph :files="filteredFiles" />
   </div>
 </template>
 
 <script setup>
+import SummaryGraph from "@/components/SummaryGraph.vue";
+
 import { defineProps, ref } from "vue";
 import { useFiles } from "../useFiles";
 import FileDetail from "./FileDetail.vue";
