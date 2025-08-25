@@ -40,9 +40,9 @@
 
       <!-- etichette e sezioni -->
       <div class="flex flex-col items-start">
-        <button @click="showCurrentYear">Anno corrente</button>
-        <button @click="showSpecial">Speciali</button>
-        <button @click="showAll">Mostra tutte</button>
+        <button @click="showFolders(`current`)">Anno corrente</button>
+        <button @click="showFolders(`special`)">Speciali</button>
+        <button @click="showFolders(null)">Mostra tutte</button>
         <!-- <button @click="showDeleted">Cestino</button> -->
       </div>
     </div>
@@ -56,20 +56,12 @@ import FolderCreationModal from "./FolderCreationModal.vue";
 import { useFiles } from "@/useFiles";
 const { setFilter, deleteFolder, state } = useFiles();
 
-function showSpecial() {
-  setFilter("special");
-}
-
-function showAll() {
-  setFilter(null);
+function showFolders(tag) {
+  setFilter(tag);
 }
 
 function showFilesInFolder(n) {
   setFilter(n);
-}
-
-function showCurrentYear() {
-  setFilter("current");
 }
 
 const showFolderModal = ref(false);
