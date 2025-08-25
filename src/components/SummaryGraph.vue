@@ -1,20 +1,22 @@
 <template>
-  <div>
-    <apexchart
-      width="350"
-      type="donut"
-      :options="chartOptions"
-      :series="series"
-    ></apexchart>
-  </div>
-  <div>
+  <div class="flex justify-center items-center">
     <div>
-      <h2>Spese totali</h2>
-      <p>{{ expensesSum }} €</p>
+      <apexchart
+        width="100%"
+        type="donut"
+        :options="chartOptions"
+        :series="series"
+      ></apexchart>
     </div>
     <div>
-      <h3>Detraibile</h3>
-      <p>{{ deductible }}</p>
+      <div class="mb-4">
+        <h2>Totale sezione:</h2>
+        <p>{{ expensesSum }} €</p>
+      </div>
+      <div>
+        <h3>Detraibile:</h3>
+        <p>{{ deductible }}</p>
+      </div>
     </div>
   </div>
 </template>
