@@ -29,7 +29,7 @@
         <ul>
           <li v-for="folder in folderList" :key="folder.id">
             <div class="flex justify-between">
-              <div @click="showFilesInFolder(folder.id)">
+              <div @click="showFolderContent(folder.id)">
                 {{ folder.name }}
               </div>
               <button @click="handleDeleteFolder(folder.id)">Elimina</button>
@@ -40,9 +40,9 @@
 
       <!-- etichette e sezioni -->
       <div class="flex flex-col items-start">
-        <button @click="showFolders(`current`)">Anno corrente</button>
-        <button @click="showFolders(`special`)">Speciali</button>
-        <button @click="showFolders(null)">Mostra tutte</button>
+        <button @click="showFolderContent(`current`)">Anno corrente</button>
+        <button @click="showFolderContent(`special`)">Speciali</button>
+        <button @click="showFolderContent(null)">Mostra tutte</button>
         <!-- <button @click="showDeleted">Cestino</button> -->
       </div>
     </div>
@@ -59,14 +59,10 @@ import { useFiles } from "@/useFiles";
 const { setFilter, state } = useFiles();
 const { folderList, deleteFolder } = useFolders();
 
-function showFolders(tag) {
+function showFolderContent(folderIdOrTag) {
   state.showDetail = false;
   console.log(state.showDetail);
-  setFilter(tag);
-}
-
-function showFilesInFolder(n) {
-  setFilter(n);
+  setFilter(folderIdOrTag);
 }
 
 const showFolderModal = ref(false);
