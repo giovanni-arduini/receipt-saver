@@ -3,7 +3,6 @@
     v-if="state.showDetail"
     class="row-start-3 col-start-2 row-end-6 col-end-6 bg-green-200"
   >
-    <!-- <ModificationsModal :fields="fileDetails" /> -->
     <FileDetail :file="fileDetails" :hide-detail="hideDetail" />
   </div>
 
@@ -62,7 +61,6 @@
 import { defineProps, ref } from "vue";
 import { useFiles } from "../useFiles";
 import FileDetail from "./FileDetail.vue";
-// import ModificationsModal from "./ModificationsModal.vue";
 
 const { filteredFiles, toggleSpecial, activeSectionName, showFile, state } =
   useFiles();
@@ -70,8 +68,8 @@ const { filteredFiles, toggleSpecial, activeSectionName, showFile, state } =
 const fileDetails = ref({});
 
 async function handleShowDetail(id) {
-  state.showDetail = true;
   const res = await showFile(id);
+  state.showDetail = true;
   fileDetails.value = res;
 }
 
